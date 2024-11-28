@@ -59,6 +59,53 @@ app.delete('/api/peliculas/:id', (req, res) => {
     res.json(eliminada);
 });
 
+// Base de datos simulada (puedes usar una base de datos real como MongoDB, MySQL, etc.)
+let generos = [
+    { id_genero: '1', nombre: 'Acción' },
+    { id_genero: '2', nombre: 'Comedia' }
+];
+
+// Rutas para géneros
+// Obtener todos los géneros
+app.get('/api/genero', (req, res) => {
+    res.status(200).json(generos);
+});
+
+// Crear un nuevo género
+app.post('/api/genero', (req, res) => {
+    const nuevoGenero = req.body;
+    nuevoGenero.id_genero = (generos.length + 1).toString(); // Generar ID automáticamente
+    generos.push(nuevoGenero);
+    res.status(201).json(nuevoGenero);
+});
+
+// Actualizar un género existente
+app.put('/api/genero/:id_genero', (req, res) => {
+    const { id_genero } = req.params;
+    const generoActualizado = req.body;
+    const index = generos.findIndex(g => g.id_genero === id_genero);
+
+    if (index !== -1) {
+        generos[index] = { ...generos[index], ...generoActualizado };
+        res.status(200).json(generos[index]);
+    } else {
+        res.status(404).json({ message: 'Género no encontrado' });
+    }
+});
+
+// Eliminar un género
+app.delete('/api/genero/:id_genero', (req, res) => {
+    const { id_genero } = req.params;
+    const index = generos.findIndex(g => g.id_genero === id_genero);
+
+    if (index !== -1) {
+        const generoEliminado = generos.splice(index, 1);
+        res.status(200).json(generoEliminado);
+    } else {
+        res.status(404).json({ message: 'Género no encontrado' });
+    }
+});
+
 // Iniciar el servidor
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
