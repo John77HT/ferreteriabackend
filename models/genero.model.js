@@ -1,6 +1,6 @@
 let generos = [
-    { id_genero: '1', nombre: 'Acción' },
-    { id_genero: '2', nombre: 'Comedia' }
+    { id_genero: '1', nombre: 'Pico' },
+    { id_genero: '2', nombre: 'Pala' }
 ];
 
 const generarId = () => (generos.length ? Math.max(...generos.map(g => g.id_genero)) + 1 : 1);
